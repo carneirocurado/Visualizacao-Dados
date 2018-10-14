@@ -27,7 +27,7 @@ from sklearn.metrics import euclidean_distances
 #nome = "apriori_estab-saude"
 nome = "mds"
 #arquivo_entrada = "./dados/ibge_municipios_2010.csv4"
-arquivo_entrada = "./dados/ibge_municipios.csv"
+arquivo_entrada = "./dados/ibge_municipios-completo.csv"
 #arquivo_saida = "./saida/saida_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm") + ".csv"
 arq_log = "./log/log_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm") + ".txt"
 
@@ -99,8 +99,6 @@ with open(arq_log, 'w', buffering=1) as arq_log:
 #    final = numpy.vstack((municipios.T,lat_long.T))
 #    pos_final = numpy.hstack((lat_long,npos))
 
-#    plt.figure()
-#    plt.scatter()
     
  
     semana = 0
@@ -109,8 +107,9 @@ with open(arq_log, 'w', buffering=1) as arq_log:
     for x in municipios[:,4:].T.astype(float):
         semana += 1
         
+        print("{0:s} - Construindo a lista dos resultados - semana {1:d}".format(time.strftime("%Y-%m-%d %H:%M:%S"), semana))
         teste_baixo = numpy.where(x <= 25)[0]
-        aux_baixo = numpy.vstack((numpy.full(len(teste_baixo),semana+3),numpy.full(len(teste_baixo),25))).T
+        aux_baixo = numpy.vstack((numpy.full(len(teste_baixo),semana),numpy.full(len(teste_baixo),'#fef0d9'))).T
         if len(lista) == 0:
             lista = numpy.hstack((municipios[teste_baixo,0:2].astype(float),aux_baixo))
         else:
@@ -118,7 +117,7 @@ with open(arq_log, 'w', buffering=1) as arq_log:
             
             
         teste_medio = numpy.where((x > 25) & (x < 75))[0]
-        aux_medio = numpy.vstack((numpy.full(len(teste_medio),semana+3),numpy.full(len(teste_medio),74))).T
+        aux_medio = numpy.vstack((numpy.full(len(teste_medio),semana),numpy.full(len(teste_medio),'#fdcc8a'))).T
         if len(lista) == 0:
             lista = numpy.hstack((municipios[teste_medio,0:2].astype(float),aux_medio))
         else:
@@ -126,7 +125,7 @@ with open(arq_log, 'w', buffering=1) as arq_log:
         
         
         teste_alto = numpy.where((x >= 75) & (x < 300))[0]
-        aux_alto = numpy.vstack((numpy.full(len(teste_alto),semana+3),numpy.full(len(teste_alto),299))).T
+        aux_alto = numpy.vstack((numpy.full(len(teste_alto),semana),numpy.full(len(teste_alto),'#fc8d59'))).T
         if len(lista) == 0:
             lista = numpy.hstack((municipios[teste_alto,0:2].astype(float),aux_alto))
         else:
@@ -134,13 +133,22 @@ with open(arq_log, 'w', buffering=1) as arq_log:
         
         
         teste_muito_alto = numpy.where(x >= 300)[0]
-        aux_muito_alto = numpy.vstack((numpy.full(len(teste_muito_alto),semana+3),numpy.full(len(teste_muito_alto),300))).T
+        aux_muito_alto = numpy.vstack((numpy.full(len(teste_muito_alto),semana),numpy.full(len(teste_muito_alto),'#d7301f'))).T
         if len(lista) == 0:
             lista = numpy.hstack((municipios[teste_muito_alto,0:2].astype(float),aux_muito_alto))
         else:
             lista = numpy.vstack((lista,numpy.hstack((municipios[teste_muito_alto,0:2].astype(float),aux_muito_alto))))
+    
+    
+    lista = lista[lista[:,1].astype(float).argsort()]
         
-        
+    plt.figure()
+    plt.scatter(lista[:,2].astype(int), lista[:,1].astype(float), c=lista[:,3])
+    plt.axis([1, 156, lista[0,1].astype(float), lista[len(lista)-1,1].astype(float)])
+    plt.xlabel('Semana Epidemiológica')
+    plt.ylabel('Municípios')
+    plt.show()
+ 
         
 #        print(x)
     
