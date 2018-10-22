@@ -1,0 +1,116 @@
+
+\documentclass[12pt,openright,twoside,a4paper,article,brazil]{abntex2}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{hyperref}
+%\usepackage[alf,abnt-etal-cite=2]{abntex2cite}
+\usepackage[num,abnt-etal-cite=2]{abntex2cite}
+%\usepackage[num,overcite,abnt-etal-cite=2]{abntex2cite}
+\citebrackets[]
+
+\graphicspath{{imagens/}}
+
+\titulo{Visualização Temporal da Taxa de Incidência de Dengue}
+\subtitle{Trabalho de Conclusão da Disciplina Visualização de Dados}
+\autor{Vítor Carneiro Curado}
+\subject{Trabalho de Conclusão da Disciplina Visualização de Dados}
+\data{\today}
+\instituicao{%
+	Universidade Federal de Minas Gerais - UFMG
+	\par
+	Departamento de Ciência da Computação - DCC
+	\par
+	Programa de Pós-Graduação \emph{Lato Sensu} em Informática
+}
+\local{Brasília - DF}
+\preambulo{Trabalho entregue como requisito para conclusão da disciplina Visualização de Dados - programa de pós-graduação \emph{Lato Sensu} em Informática, área de concentração em Gestão de Tecnologia da Informação.}
+\orientador{Profa. Dra. Raquel Minardi}
+
+\AtBeginDocument{
+	\hypersetup{
+		pdftitle={Visualização Temporal da Taxa de Incidência de Dengue},
+		pdfauthor={Vítor Carneiro Curado},
+		pdfsubject={\imprimirpreambulo},
+		pdfkeywords={Especialização, Tecnologia da Informação, UFMG},
+		pdfcreator={LaTeX with abnTeX2}
+	}
+}
+
+\begin{document}
+
+\frontmatter
+
+%\imprimircapa
+%\imprimirfolhaderosto
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\mainmatter
+
+
+
+\section{Introdução}
+\label{sec:introducao}
+
+Doenças infecciosas representam uma constante ameaça à saúde pública. Para conter a infestação, é essencial que as autoridades deem uma resposta rápida, nos estágios iniciais da epidemia \cite{social-surveillance}. Os primeiros 3 dias de uma epidemia são considerados críticos para as autoridades conterem o avanço da infestação \cite{internet-surveillance}. Apesar disso, as informações oficiais têm, em média, um atraso de três, ou mais, semanas \cite{forecasting-zika}.
+
+Segundo a Organização Mundial de Saúde, entre as doenças virais transmitidas por mosquitos, a Dengue é a que apresenta a situação epidemiológica mais alarmante do mundo \cite{who-strategy-dengue-prevention}. O vírus da dengue é transmitido pelas fêmeas dos mosquitos \emph{Aedes Aegypti} e, em menor extenção, \emph{Aedes albopictus}. A incidência de dengue cresceu drasticamente ao redor do mundo, afetando centenas de milhares de pessoas todo ano \cite{who-dengue-website}. O Brasil concentra a maior parte dos casos de dengue do continente americano. Em 2016, por exemplo, dos 2,38 milhões de casos registrados em todo o continente americano, 1,5 milhão foi registrado no Brasil \cite{who-dengue-website}.
+
+A dengue ocorre, principalmente, em áreas tropicais e subtropicais, onde as condições do meio ambiente favorecem a proliferação dos mosquitos que são os vetores de transmissão da doença \cite{ms-descricao-doenca}. Essa sensitividade às condições climáticas ocorre, principalmente, devido ao fato de os mosquitos precisarem de água parada para procriar e, também, de um ambiente quente para favorecer o desenvolvimento da larva e aumentar a velocidade de replicação do vírus \cite{effect-climate-dengue}.
+
+A compreensão dos fatores que influenciam a transmissão do vírus da Dengue pode contribuir para diminuir a ocorrência de epidemias. Um importante fator na disseminação do vírus é a própria locomoção de pessoas infectadas, que podem levar o vírus de uma região epidêmica para outra que, ainda, não apresenta epidemia. Normalmente, as epidemias de dengue se originam em cidades maiores e, a partir delas, são transmitidas para comunidades menores\cite{cities-spawn-dengue}. Na Tailândia, por exemplo, constatou-se que, no período de 1983 a 1997, o vírus da dengue originava-se em Bangkok e, a partir dessa cidade, se espalhava para o restante do país\cite{travelling-dengue-thailand}. Em Bangladesh, por sua vez, constatou-se que existe um padrão geográfico nas áreas de transmissão do vírus da dengue\cite{dengue-geographic-information-system}.
+
+
+
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+A análise de similaridade entre as taxas de incidência de diferentes cidades pode auxiliar na gestão de áreas de risco de disseminação da dengue. Conforme relatado na seção \ref{sec:introducao}, diversos estudos já comprovaram que existe relação entre localização geográfica de cidades e a transmissão do vírus\cite{cities-spawn-dengue}\cite{travelling-dengue-thailand}\cite{dengue-geographic-information-system}.
+
+Considerando o exposto, o presente trabalho tem como objetivo realizar uma análise visual da taxa de incidência de dengue nas cidades do Brasil. Utilizar-se-á uma visualização temporal para mostrar a evolução da taxa de incidência da dengue ao longo das semanas epidemiológicas, buscando verificar se existe uma associação entre a proximidade geográfica de municípios e a taxa de incidência da doença nesses municípios.
+
+
+\section{Metodologia}
+\label{sec:metodologia}
+
+
+
+A metodologia para criar uma representação temporal da taxa de incidência de dengue utilizou o algoritmo de redução de dimensionalidade \emph{Multidimensional Scaling} (MDS)\cite{sklearn-mds}. \emph{Multidimensional scaling} é um conjunto de técnicas estatísticas utilizadas para reduzir a complexidade de um conjunto de dados\cite{multidimensional-scaling-book}. A escolha desse algoritmo baseou-se no fato de ele ser capaz de reduzir a dimensionalidade dos dados de entrada preservando a distância relativa entre eles (\emph{Metric MDS}).
+
+Deste modo, foi possível transformar a latitude e a longitude dos municípios em uma única dimensão. Essa dimensão foi projetada no eixo \emph{y} do gráfico. O eixo \emph{x}, por sua vez, corresponde às semanas epidemiológicas para os anos de 2011, 2012 e 2013. Por fim, a taxa de incidência de dengue foi representada por uma escala de cores. A figura \ref{fig:dengue-mds} apresenta a visualização final obtida. O código-fonte criado para gerar a representação visual está disponível no apêndice \ref{sec:ap-codigo-mds}\footnote{A reprodução do experimento pode ser realizada fazendo o download dos dados pelo endereço: \url{???}}
+
+??? IMAGEM ???
+
+A redução de dimensionalidade dos dados, entretanto, reduz a capacidade de representação dos dados\cite{multidimensional-scaling-book}. Deste modo, existe um ao reduzir a latitude e a longitude (2 dimensões) dos municípios para apenas 1 dimensão, representada no eixo \emph{y} da figura \ref{fig:dengue-mds},
+
+
+
+
+\section{Análises}
+\label{sec:analises}
+
+
+
+\section{Conclusão}
+\label{sec:conclusao}
+
+
+
+\backmatter
+
+\postextual
+
+\bibliography{visualizacao-dados}
+
+\end{document}
