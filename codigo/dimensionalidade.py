@@ -49,7 +49,8 @@ with open(arq_log, 'w', buffering=1) as arq_log:
     tempo = time.time()
     
     # carrega os dados de latitude e longitude
-    dados = numpy.genfromtxt(arquivo_entrada, delimiter=",", converters={3:lambda x: x.decode()}, dtype='U50', skip_header=1, names=None, unpack=False)
+#    dados = numpy.genfromtxt(arquivo_entrada, delimiter=",", converters={3:lambda x: x.decode()}, dtype='U50', skip_header=1, names=None, unpack=False)
+    dados = numpy.genfromtxt(arquivo_entrada, delimiter=",", dtype='U50', skip_header=1, names=None, unpack=False, encoding='utf-8')
     
     header = numpy.genfromtxt(arquivo_entrada, delimiter=",", dtype='U50', skip_header=0, names=None, max_rows=1, unpack=False)
     
