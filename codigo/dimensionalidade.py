@@ -147,6 +147,7 @@ with open(arq_log, 'w', buffering=1) as arq_log:
     plt.axis([1, 156, lista[0,1].astype(float), lista[len(lista)-1,1].astype(float)])
     plt.xlabel('Semana Epidemiológica')
     plt.ylabel('Municípios')
+    plt.legend()
     plt.show()
  
         
