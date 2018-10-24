@@ -103,53 +103,78 @@ with open(arq_log, 'w', buffering=1) as arq_log:
     
  
     semana = 0
-    lista = list()
+    lista_1 = list()
+    lista_2 = list()
+    lista_3 = list()
+    lista_4 = list()
 #    lista = municipios[:,1]
     for x in municipios[:,4:].T.astype(float):
         semana += 1
         
         print("{0:s} - Construindo a lista dos resultados - semana {1:d}".format(time.strftime("%Y-%m-%d %H:%M:%S"), semana))
         teste_baixo = numpy.where(x <= 25)[0]
-        aux_baixo = numpy.vstack((numpy.full(len(teste_baixo),semana),numpy.full(len(teste_baixo),'#fef0d9'))).T
-        if len(lista) == 0:
-            lista = numpy.hstack((municipios[teste_baixo,0:2].astype(float),aux_baixo))
+        aux_baixo = numpy.vstack((numpy.full(len(teste_baixo),semana),numpy.full(len(teste_baixo),'#fef0d9'),numpy.full(len(teste_baixo),'Baixo'))).T
+        if len(lista_1) == 0:
+            lista_1 = numpy.hstack((municipios[teste_baixo,0:2].astype(float),aux_baixo))
         else:
-            lista = numpy.vstack((lista,numpy.hstack((municipios[teste_baixo,0:2].astype(float),aux_baixo))))
+            lista_1 = numpy.vstack((lista_1,numpy.hstack((municipios[teste_baixo,0:2].astype(float),aux_baixo))))
             
             
         teste_medio = numpy.where((x > 25) & (x < 75))[0]
-        aux_medio = numpy.vstack((numpy.full(len(teste_medio),semana),numpy.full(len(teste_medio),'#fdcc8a'))).T
-        if len(lista) == 0:
-            lista = numpy.hstack((municipios[teste_medio,0:2].astype(float),aux_medio))
+        aux_medio = numpy.vstack((numpy.full(len(teste_medio),semana),numpy.full(len(teste_medio),'#fdcc8a'),numpy.full(len(teste_medio),'Medio'))).T
+        if len(lista_2) == 0:
+            lista_2 = numpy.hstack((municipios[teste_medio,0:2].astype(float),aux_medio))
         else:
-            lista = numpy.vstack((lista,numpy.hstack((municipios[teste_medio,0:2].astype(float),aux_medio))))
+            lista_2 = numpy.vstack((lista_2,numpy.hstack((municipios[teste_medio,0:2].astype(float),aux_medio))))
         
         
         teste_alto = numpy.where((x >= 75) & (x < 300))[0]
-        aux_alto = numpy.vstack((numpy.full(len(teste_alto),semana),numpy.full(len(teste_alto),'#fc8d59'))).T
-        if len(lista) == 0:
-            lista = numpy.hstack((municipios[teste_alto,0:2].astype(float),aux_alto))
+        aux_alto = numpy.vstack((numpy.full(len(teste_alto),semana),numpy.full(len(teste_alto),'#fc8d59'),numpy.full(len(teste_alto),'Alto'))).T
+        if len(lista_3) == 0:
+            lista_3 = numpy.hstack((municipios[teste_alto,0:2].astype(float),aux_alto))
         else:
-            lista = numpy.vstack((lista,numpy.hstack((municipios[teste_alto,0:2].astype(float),aux_alto))))
+            lista_3 = numpy.vstack((lista_3,numpy.hstack((municipios[teste_alto,0:2].astype(float),aux_alto))))
         
         
         teste_muito_alto = numpy.where(x >= 300)[0]
-        aux_muito_alto = numpy.vstack((numpy.full(len(teste_muito_alto),semana),numpy.full(len(teste_muito_alto),'#d7301f'))).T
-        if len(lista) == 0:
-            lista = numpy.hstack((municipios[teste_muito_alto,0:2].astype(float),aux_muito_alto))
+        aux_muito_alto = numpy.vstack((numpy.full(len(teste_muito_alto),semana),numpy.full(len(teste_muito_alto),'#d7301f'),numpy.full(len(teste_muito_alto),'Muito Alto'))).T
+        if len(lista_4) == 0:
+            lista_4 = numpy.hstack((municipios[teste_muito_alto,0:2].astype(float),aux_muito_alto))
         else:
-            lista = numpy.vstack((lista,numpy.hstack((municipios[teste_muito_alto,0:2].astype(float),aux_muito_alto))))
+            lista_4 = numpy.vstack((lista_4,numpy.hstack((municipios[teste_muito_alto,0:2].astype(float),aux_muito_alto))))
     
-    
-    lista = lista[lista[:,1].astype(float).argsort()]
+    lista_completa = lista_1.copy()
+    lista_completa = numpy.vstack((lista_completa, lista_2))
+    lista_completa = numpy.vstack((lista_completa, lista_3))
+    lista_completa = numpy.vstack((lista_completa, lista_4))
+    lista_completa = lista_completa[lista_completa[:,1].astype(float).argsort()]
         
     plt.figure()
-    plt.scatter(lista[:,2].astype(int), lista[:,1].astype(float), c=lista[:,3])
-    plt.axis([1, 156, lista[0,1].astype(float), lista[len(lista)-1,1].astype(float)])
+#    plt.scatter(lista[:,2].astype(int), lista[:,1].astype(float), c=lista[:,3])
+#    plt.scatter(lista_1[:,2].astype(int), lista_1[:,1].astype(float), c=lista_1[:,3], label=lista_1[:,4])
+#    plt.scatter(lista_2[:,2].astype(int), lista_2[:,1].astype(float), c=lista_2[:,3], label=lista_2[:,4])
+#    plt.scatter(lista_3[:,2].astype(int), lista_3[:,1].astype(float), c=lista_3[:,3], label=lista_3[:,4])
+#    plt.scatter(lista_4[:,2].astype(int), lista_4[:,1].astype(float), c=lista_4[:,3], label=lista_4[:,4])
+    plt.scatter(lista_1[:,2].astype(int), lista_1[:,1].astype(float), c='#fef0d9', label='Baixo')
+    plt.scatter(lista_2[:,2].astype(int), lista_2[:,1].astype(float), c='#fdcc8a', label='Medio')
+    plt.scatter(lista_3[:,2].astype(int), lista_3[:,1].astype(float), c='#fc8d59', label='Alto')
+    plt.scatter(lista_4[:,2].astype(int), lista_4[:,1].astype(float), c='#d7301f', label='Muito Alto')
+    plt.axis([1, 156, lista_completa[0,1].astype(float), lista_completa[len(lista_completa)-1,1].astype(float)])
     plt.xlabel('Semana Epidemiológica')
     plt.ylabel('Municípios')
-    plt.legend()
+    plt.colorbar()
+#    plt.legend()
     plt.show()
+    
+    plt.figure()
+    teste = plt.scatter(lista_completa[:,2].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,3], label=lista_completa[:,4])
+    plt.axis([1, 156, lista_completa[0,1].astype(float), lista_completa[len(lista_completa)-1,1].astype(float)])
+    plt.xlabel('Semana Epidemiológica2')
+    plt.ylabel('Municípios2')
+    #plt.legend()
+    plt.colorbar(teste)
+    plt.show()
+    
  
         
 #        print(x)
