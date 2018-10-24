@@ -107,11 +107,19 @@ with open(arq_log, 'w', buffering=1) as arq_log:
     lista_2 = list()
     lista_3 = list()
     lista_4 = list()
+    lista_completa2 = list()
 #    lista = municipios[:,1]
     for x in municipios[:,4:].T.astype(float):
         semana += 1
         
         print("{0:s} - Construindo a lista dos resultados - semana {1:d}".format(time.strftime("%Y-%m-%d %H:%M:%S"), semana))
+        
+        aux_lista = numpy.vstack((municipios[:,0], municipios[:,1], municipios[:,2], municipios[:,3],numpy.full(len(x),semana), municipios[:,semana+3])).T
+        if len(lista_completa2) == 0:
+            lista_completa2 = aux_lista
+        else:         
+            lista_completa2 = numpy.vstack((lista_completa2,aux_lista))
+        
         teste_baixo = numpy.where(x <= 25)[0]
         aux_baixo = numpy.vstack((numpy.full(len(teste_baixo),semana),numpy.full(len(teste_baixo),'#fef0d9'),numpy.full(len(teste_baixo),'Baixo'))).T
         if len(lista_1) == 0:
@@ -166,13 +174,17 @@ with open(arq_log, 'w', buffering=1) as arq_log:
 #    plt.legend()
     plt.show()
     
+    vmax = max(lista_completa2[:,5].astype(float))
+    vmin = min(lista_completa2[:,5].astype(float))
+    
     plt.figure()
-    teste = plt.scatter(lista_completa[:,2].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,3], label=lista_completa[:,4])
+#    plt.scatter(lista_completa[:,2].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,3], label=lista_completa[:,4])
+    plt.scatter(lista_completa[:,2].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,3])
     plt.axis([1, 156, lista_completa[0,1].astype(float), lista_completa[len(lista_completa)-1,1].astype(float)])
     plt.xlabel('Semana Epidemiológica2')
     plt.ylabel('Municípios2')
     #plt.legend()
-    plt.colorbar(teste)
+#    plt.colorbar()
     plt.show()
     
  
