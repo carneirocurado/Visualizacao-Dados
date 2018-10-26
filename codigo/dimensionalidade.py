@@ -19,6 +19,7 @@ nome = "mds"
 arquivo_entrada = "./dados/ibge_municipios-completo.csv"
 #arquivo_saida = "./saida/saida_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm") + ".csv"
 arq_log = "./log/log_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm") + ".txt"
+arq_fig = "./saida/fig_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm")
 
 
 with open(arq_log, 'w', buffering=1) as arq_log:
@@ -64,49 +65,61 @@ with open(arq_log, 'w', buffering=1) as arq_log:
  
     print("{0:s} - Construindo a lista dos resultados".format(time.strftime("%Y-%m-%d %H:%M:%S")))
     semana = 1   
-    lista_completa2 = numpy.vstack((municipios[:,0], municipios[:,1], municipios[:,2], municipios[:,3],numpy.full(len(municipios[:,4]),semana), municipios[:,semana+3])).T
-    for x in municipios[:,5:].T.astype(float):
+    lista_completa = numpy.vstack((municipios2[:,0], municipios2[:,1], municipios2[:,2], municipios2[:,3],numpy.full(len(municipios2[:,4]),semana), municipios2[:,semana+3])).T
+    for x in municipios2[:,5:].T.astype(float):
         semana += 1
         
-        aux_lista = numpy.vstack((municipios[:,0], municipios[:,1], municipios[:,2], municipios[:,3],numpy.full(len(x),semana), municipios[:,semana+3])).T
-        lista_completa2 = numpy.vstack((lista_completa2,aux_lista))
+        aux_lista = numpy.vstack((municipios2[:,0], municipios2[:,1], municipios2[:,2], municipios2[:,3],numpy.full(len(x),semana), municipios2[:,semana+3])).T
+        lista_completa = numpy.vstack((lista_completa,aux_lista))
         
 
     print("{0:s} - Criando Visualizacao".format(time.strftime("%Y-%m-%d %H:%M:%S")))   
-    vmax = max(lista_completa2[:,5].astype(float))
-    vmin = min(lista_completa2[:,5].astype(float))
+    vmax = max(lista_completa[:,5].astype(float))
+    vmin = min(lista_completa[:,5].astype(float))
     
-    norm_min_max = colors.Normalize(vmin=vmin, vmax=vmax)
-    log_norm_min_max = colors.SymLogNorm(linthresh=1, linscale=1, vmin=vmin, vmax=vmax)
+#    norm_min_max = colors.Normalize(vmin=vmin, vmax=300)
+#    log_norm_min_max = colors.SymLogNorm(linthresh=1, linscale=0.1, vmin=vmin, vmax=300)
     
-    plt.figure()
-#    plt.scatter(lista_completa[:,2].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,3], label=lista_completa[:,4])
-    
-    cm = plt.cm.get_cmap('YlOrBr')
-#    sc = plt.scatter(lista_completa2[:,4].astype(int), lista_completa2[:,1].astype(float), c=lista_completa2[:,5].astype(float), vmin=vmin, vmax=vmax, cmap=cm)
-    sc = plt.scatter(lista_completa2[:,4].astype(int), lista_completa2[:,1].astype(float), c=lista_completa2[:,5].astype(float), norm=log_norm_min_max, cmap=cm)
-    plt.axis([min(lista_completa2[:,4].astype(float)), max(lista_completa2[:,4].astype(float)), min(lista_completa2[:,1].astype(float)), max(lista_completa2[:,1].astype(float))])
-    plt.xlabel('Semana Epidemiológica')
-    plt.ylabel('Municípios')
-    #plt.legend()
-    plt.colorbar(sc)
-    plt.show()
+#    plt.figure()   
+#    cm = plt.cm.get_cmap('YlOrBr')
+#    sc = plt.scatter(lista_completa[:,4].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,5].astype(float), norm=log_norm_min_max, cmap=cm)
+#    plt.axis([min(lista_completa[:,4].astype(float)), max(lista_completa[:,4].astype(float)), min(lista_completa[:,1].astype(float)), max(lista_completa[:,1].astype(float))])
+#    plt.xlabel('Semana Epidemiológica')
+#    plt.ylabel('Municípios')
+#    plt.colorbar(sc, extend='max')
+#    plt.show()
     
     
     
-    plt.figure()   
-    bounds = numpy.array([0,25,50,75,100,125,150,175,200,225,250,275,300,350,400,450,500])
+    fig, ax = plt.subplots()
+    bounds = numpy.array([0,5,10,15,20,25,50,75,100,150,200,250,300])
     bound_norm_min_max = colors.BoundaryNorm(boundaries=bounds, ncolors=256, clip=True)
     cm = plt.cm.get_cmap('YlOrBr')
-    sc = plt.scatter(lista_completa2[:,4].astype(int), lista_completa2[:,1].astype(float), c=lista_completa2[:,5].astype(float), norm=bound_norm_min_max, cmap=cm)
-    plt.axis([min(lista_completa2[:,4].astype(float)), max(lista_completa2[:,4].astype(float)), min(lista_completa2[:,1].astype(float)), max(lista_completa2[:,1].astype(float))])
+#    cm = fig.cm.get_cmap('RdBu_r')
+    sc = plt.scatter(lista_completa[:,4].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,5].astype(float), norm=bound_norm_min_max, cmap=cm)
+    plt.axis([min(lista_completa[:,4].astype(float)), max(lista_completa[:,4].astype(float)), min(lista_completa[:,1].astype(float)), max(lista_completa[:,1].astype(float))])
     plt.xlabel('Semana Epidemiológica')
-    plt.ylabel('Municípios')
+#    plt.ylabel('Municípios')
+    
+    # Precisamos desenhar o canvas para poder resgatar os labels originais
+    fig.canvas.draw()
+    # Resgatando o label atual plotados para o eixo y
+    # Lembrando que esse eixo se refere à projeção da lat long em uma única dimensão - usando MDS
+    y_labels = [item for item in ax.get_yticks()]
+    # Resgatando, agora, da lista de municipios, os indices que correspondem ao y_label anterior
+    y_new_idx = [(numpy.abs(lista_completa[:,1].astype(float) - item)).argmin() for item in y_labels]
+    y_new_labels = [item[2] + ' - ' + item[3] for item in lista_completa[y_new_idx]]
+    # Ajustando, agora, o label do eixo y para o nome dos municipios, pois e mais intuitivo...
+    ax.set_yticklabels(y_new_labels)
+    
     #plt.legend()
-    plt.colorbar(sc)
+    plt.colorbar(sc, extend='max')
+    
+#    plt.savefig(arq_fig+".eps", dpi=150)
+#    plt.savefig(arq_fig+".pdf", dpi=150)
+    
     plt.show()
-    
-    
+
     str_rodape = ("\nHora termino: {0:s}\n".format(time.strftime("%Y-%m-%d %H:%M:%S")))
     arq_log.write(str_rodape)
     print (str_rodape)
