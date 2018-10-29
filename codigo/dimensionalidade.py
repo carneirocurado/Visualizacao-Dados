@@ -4,16 +4,82 @@ import numpy
 #import datetime
 import time
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+from matplotlib.ticker import NullFormatter
 from matplotlib import colors
 
 from sklearn import manifold
 from sklearn.metrics import euclidean_distances
 
-nome = "mds"
+nome = "dengue-temporal"
 arquivo_entrada = "./dados/ibge_municipios-completo.csv"
 arq_log = "./log/log_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm") + ".txt"
-arq_fig = "./saida/fig_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm")
+arq_fig = "./saida/" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm")
 
+
+def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, x_nro_locators = None, y_nro_locators = None):
+
+    if ( x_min == None ):
+        x_min = min(lista[:,4].astype(int))
+    if ( x_max == None ):
+        x_max = max(lista[:,4].astype(int))
+    if ( y_min == None ):
+        y_min = min(lista[:,1].astype(float))
+    if ( y_max == None ):
+        y_max = max(lista[:,1].astype(float))
+        
+    fig, ax = plt.subplots()
+    bounds = numpy.array([0,5,10,15,20,25,50,75,100,150,200,250,300])
+    bound_norm_min_max = colors.BoundaryNorm(boundaries=bounds, ncolors=256, clip=True)
+    cm = plt.cm.get_cmap('YlOrBr')
+    
+    lista_aux = lista[numpy.where(numpy.logical_and(lista[:,4].astype(int) >= x_min, lista[:,4].astype(int) <= x_max))]
+    lista_filtrada = lista_aux[numpy.where(numpy.logical_and(lista_aux[:,1].astype(float) >= y_min, lista_aux[:,1].astype(float) <= y_max))]
+    
+    sc = plt.scatter(lista_filtrada[:,4].astype(int), lista_filtrada[:,1].astype(float), c=lista_filtrada[:,5].astype(float), marker=',', norm=bound_norm_min_max, cmap=cm)
+    plt.axis([x_min, x_max, y_min, y_max])
+
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    if ( x_nro_locators == None ):
+        ax.xaxis.set_major_locator(mticker.AutoLocator())
+    else:
+        ax.xaxis.set_major_locator(mticker.MaxNLocator(x_nro_locators))       
+    if ( y_nro_locators == None ):
+        ax.yaxis.set_major_locator(mticker.AutoLocator())
+    else:
+        ax.yaxis.set_major_locator(mticker.MaxNLocator(y_nro_locators))
+
+    plt.xlabel('Semana Epidemiológica')
+#    plt.ylabel('Municípios')
+    
+#    plt.tight_layout(pad=2.0)
+    plt.subplots_adjust(left=0.2, right=1.0)
+    
+    ax.tick_params(axis='both', which='minor', length=6, width=2, labelsize='small', direction='out', bottom=True, left=True)
+    
+    # Precisamos desenhar o canvas para poder resgatar os labels originais
+    fig.canvas.draw()
+    # Resgatando o label atual plotados para o eixo y
+    # Lembrando que esse eixo se refere à projeção da lat long em uma única dimensão - usando MDS
+    y_labels = [item for item in ax.get_yticks()]
+    # Resgatando, agora, a UF e nome dos municipios para substituir no label do eixo y
+    y_new_idx = [(numpy.abs(lista_filtrada[:,1].astype(float) - item)).argmin() for item in y_labels]
+    y_new_labels = [item[2] + ' - ' + item[3] for item in lista_filtrada[y_new_idx]]
+    # Ajustando o label do eixo y para o nome dos municipios, pois e mais intuitivo...
+    ax.set_yticklabels(y_new_labels)
+    
+    #plt.legend()
+    plt.colorbar(sc, extend='max')
+
+#    plt.savefig(arq_fig+".eps", dpi=150)
+    plt.savefig(arq_fig+"_x-"+str(x_min)+"-"+str(x_max)+"_y-"+str(y_min)+"-"+str(y_max)+".pdf", dpi=75)
+    
+    plt.show()
+
+
+
+        
 
 with open(arq_log, 'w', buffering=1) as arq_log:
         
@@ -60,37 +126,42 @@ with open(arq_log, 'w', buffering=1) as arq_log:
         lista_completa = numpy.vstack((lista_completa,aux_lista))
         
     print("{0:s} - Criando Visualizacao".format(time.strftime("%Y-%m-%d %H:%M:%S")))   
-    vmax = max(lista_completa[:,5].astype(float))
-    vmin = min(lista_completa[:,5].astype(float))
+    
+    cria_imagem(lista_completa, y_nro_locators=16)
+    cria_imagem(lista_completa, x_min=90, x_max=120, y_min=-15, y_max=-5, y_nro_locators=16)
+#    vmax = max(lista_completa[:,5].astype(float))
+#    vmin = min(lista_completa[:,5].astype(float))
      
-    fig, ax = plt.subplots()
-    bounds = numpy.array([0,5,10,15,20,25,50,75,100,150,200,250,300])
-    bound_norm_min_max = colors.BoundaryNorm(boundaries=bounds, ncolors=256, clip=True)
-    cm = plt.cm.get_cmap('YlOrBr')
+##    fig, ax = plt.subplots()
+##    bounds = numpy.array([0,5,10,15,20,25,50,75,100,150,200,250,300])
+##    bound_norm_min_max = colors.BoundaryNorm(boundaries=bounds, ncolors=256, clip=True)
+##    cm = plt.cm.get_cmap('YlOrBr')
 #    cm = fig.cm.get_cmap('RdBu_r')
-    sc = plt.scatter(lista_completa[:,4].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,5].astype(float), norm=bound_norm_min_max, cmap=cm)
-    plt.axis([min(lista_completa[:,4].astype(float)), max(lista_completa[:,4].astype(float)), min(lista_completa[:,1].astype(float)), max(lista_completa[:,1].astype(float))])
-    plt.xlabel('Semana Epidemiológica')
+##    sc = plt.scatter(lista_completa[:,4].astype(int), lista_completa[:,1].astype(float), c=lista_completa[:,5].astype(float), norm=bound_norm_min_max, cmap=cm)
+##    plt.axis([min(lista_completa[:,4].astype(float)), max(lista_completa[:,4].astype(float)), min(lista_completa[:,1].astype(float)), max(lista_completa[:,1].astype(float))])
+##    ax.yaxis.set_minor_formatter(NullFormatter())
+##    ax.yaxis.set_major_locator(mticker.MaxNLocator(16))
+##    plt.xlabel('Semana Epidemiológica')
 #    plt.ylabel('Municípios')
     
     # Precisamos desenhar o canvas para poder resgatar os labels originais
-    fig.canvas.draw()
+##    fig.canvas.draw()
     # Resgatando o label atual plotados para o eixo y
     # Lembrando que esse eixo se refere à projeção da lat long em uma única dimensão - usando MDS
-    y_labels = [item for item in ax.get_yticks()]
+##    y_labels = [item for item in ax.get_yticks()]
     # Resgatando, agora, a UF e nome dos municipios para substituir no label do eixo y
-    y_new_idx = [(numpy.abs(lista_completa[:,1].astype(float) - item)).argmin() for item in y_labels]
-    y_new_labels = [item[2] + ' - ' + item[3] for item in lista_completa[y_new_idx]]
+##    y_new_idx = [(numpy.abs(lista_completa[:,1].astype(float) - item)).argmin() for item in y_labels]
+##    y_new_labels = [item[2] + ' - ' + item[3] for item in lista_completa[y_new_idx]]
     # Ajustando o label do eixo y para o nome dos municipios, pois e mais intuitivo...
-    ax.set_yticklabels(y_new_labels)
+##    ax.set_yticklabels(y_new_labels)
     
     #plt.legend()
-    plt.colorbar(sc, extend='max')
+##    plt.colorbar(sc, extend='max')
 
 #    plt.savefig(arq_fig+".eps", dpi=150)
-#    plt.savefig(arq_fig+".pdf", dpi=150)
+##    plt.savefig(arq_fig+".pdf", dpi=75)
     
-    plt.show()
+##    plt.show()
 
     str_rodape = ("\nHora termino: {0:s}\n".format(time.strftime("%Y-%m-%d %H:%M:%S")))
     arq_log.write(str_rodape)
