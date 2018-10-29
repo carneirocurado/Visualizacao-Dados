@@ -54,7 +54,7 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
 #    plt.ylabel('Municípios')
     
 #    plt.tight_layout(pad=2.0)
-    plt.subplots_adjust(left=0.2, right=1.0)
+    plt.subplots_adjust(left=0.3, right=1.0)
     
     ax.tick_params(axis='both', which='minor', length=6, width=2, labelsize='small', direction='out', bottom=True, left=True)
     
@@ -68,6 +68,11 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
     y_new_labels = [item[2] + ' - ' + item[3] for item in lista_filtrada[y_new_idx]]
     # Ajustando o label do eixo y para o nome dos municipios, pois e mais intuitivo...
     ax.set_yticklabels(y_new_labels)
+    for tick in ax.yaxis.get_major_ticks():
+        tick.label.set_fontsize('x-small')
+        
+    for tick in ax.xaxis.get_major_ticks():
+        tick.label.set_fontsize('x-small')
     
     #plt.legend()
     plt.colorbar(sc, extend='max')
