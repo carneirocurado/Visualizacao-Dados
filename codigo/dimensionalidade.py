@@ -36,11 +36,11 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
     lista_aux = lista[numpy.where(numpy.logical_and(lista[:,4].astype(int) >= x_min, lista[:,4].astype(int) <= x_max))]
     lista_filtrada = lista_aux[numpy.where(numpy.logical_and(lista_aux[:,1].astype(float) >= y_min, lista_aux[:,1].astype(float) <= y_max))]
     
-    sc = plt.scatter(lista_filtrada[:,4].astype(int), lista_filtrada[:,1].astype(float), c=lista_filtrada[:,5].astype(float), marker=',', norm=bound_norm_min_max, cmap=cm)
+    sc = plt.scatter(lista_filtrada[:,4].astype(int), lista_filtrada[:,1].astype(float), c=lista_filtrada[:,5].astype(float), marker='.', norm=bound_norm_min_max, cmap=cm)
     plt.axis([x_min, x_max, y_min, y_max])
 
-    ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.yaxis.set_minor_formatter(NullFormatter())
+#    ax.xaxis.set_minor_formatter(NullFormatter())
+#    ax.yaxis.set_minor_formatter(NullFormatter())
     if ( x_nro_locators == None ):
         ax.xaxis.set_major_locator(mticker.AutoLocator())
     else:
@@ -49,12 +49,14 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
         ax.yaxis.set_major_locator(mticker.AutoLocator())
     else:
         ax.yaxis.set_major_locator(mticker.MaxNLocator(y_nro_locators))
+        
+    ax.fill([90,120,120,90],[-5,-5,-15,-15], alpha=0.2, edgecolor='#ffffffff')
 
-    plt.xlabel('Semana Epidemiológica')
+    plt.xlabel('Semana Epidemiológica', fontsize='x-small')
 #    plt.ylabel('Municípios')
     
 #    plt.tight_layout(pad=2.0)
-    plt.subplots_adjust(left=0.3, right=1.0)
+    plt.subplots_adjust(left=0.3, right=0.9)
     
     ax.tick_params(axis='both', which='minor', length=6, width=2, labelsize='small', direction='out', bottom=True, left=True)
     
@@ -75,7 +77,9 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
         tick.label.set_fontsize('x-small')
     
     #plt.legend()
-    plt.colorbar(sc, extend='max')
+    cb = plt.colorbar(sc, extend='max')
+    
+    cb.set_label ('Taxa de Incidência por 100 mil hab.', fontsize='x-small')
 
 #    plt.savefig(arq_fig+".eps", dpi=150)
     plt.savefig(arq_fig+"_x-"+str(x_min)+"-"+str(x_max)+"_y-"+str(y_min)+"-"+str(y_max)+".pdf", dpi=75)

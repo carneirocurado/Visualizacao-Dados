@@ -78,21 +78,19 @@ A compreensão dos fatores que influenciam a transmissão do vírus da Dengue po
 
 A análise de similaridade entre as taxas de incidência de diferentes cidades pode auxiliar na gestão de áreas de risco de disseminação da dengue. Conforme relatado na seção \ref{sec:introducao}, diversos estudos já comprovaram que existe relação entre localização geográfica de cidades e a transmissão do vírus\cite{cities-spawn-dengue}\cite{travelling-dengue-thailand}\cite{dengue-geographic-information-system}.
 
-Considerando o exposto, o presente trabalho tem como objetivo realizar uma análise visual da taxa de incidência de dengue nas cidades do Brasil. Utilizar-se-á uma visualização temporal para mostrar a evolução da taxa de incidência da dengue ao longo das semanas epidemiológicas, buscando verificar se existe uma associação entre a proximidade geográfica de municípios e a taxa de incidência da doença nesses municípios.
+Considerando o exposto, o presente trabalho realiza uma análise visual da taxa de incidência de dengue nas cidades do Brasil. O objetivo é verificar se existe uma relação na variação da taxa de incidência de dengue em municípios próximos. Utilizar-se-á, para este fim, uma visualização temporal para mostrar a evolução da taxa de incidência da dengue ao longo das semanas epidemiológicas, buscando verificar se existe uma associação entre a proximidade geográfica de municípios e a taxa de incidência da doença nesses municípios.
 
 
 \section{Metodologia}
 \label{sec:metodologia}
 
-
-
-A metodologia para criar uma representação temporal da taxa de incidência de dengue utilizou o algoritmo de redução de dimensionalidade \emph{Multidimensional Scaling} (MDS)\cite{sklearn-mds}. \emph{Multidimensional scaling} é um conjunto de técnicas estatísticas utilizadas para reduzir a complexidade de um conjunto de dados\cite{multidimensional-scaling-book}. A escolha desse algoritmo baseou-se no fato de ele ser capaz de reduzir a dimensionalidade dos dados de entrada preservando a distância relativa entre eles (\emph{Metric MDS}).
+A metodologia para criar uma representação temporal da taxa de incidência de dengue utilizou o algoritmo de redução de dimensionalidade \emph{Multidimensional Scaling} (MDS)\cite{sklearn-mds}. \emph{Multidimensional Scaling} é um conjunto de técnicas estatísticas utilizadas para reduzir a complexidade de um conjunto de dados\cite{multidimensional-scaling-book}. A escolha desse algoritmo baseou-se no fato de ele ser capaz de reduzir a dimensionalidade dos dados de entrada preservando a distância relativa entre eles (\emph{Metric MDS}).
 
 Deste modo, foi possível transformar a latitude e a longitude dos municípios em uma única dimensão. Essa dimensão foi projetada no eixo \emph{y} do gráfico. O eixo \emph{x}, por sua vez, corresponde às semanas epidemiológicas para os anos de 2011, 2012 e 2013. Por fim, a taxa de incidência de dengue foi representada por uma escala de cores. A figura \ref{fig:dengue-mds} apresenta a visualização final obtida. O código-fonte criado para gerar a representação visual está disponível no apêndice \ref{sec:ap-codigo-mds}\footnote{A reprodução do experimento pode ser realizada fazendo o download dos dados pelo endereço: \url{???}}
 
 ??? IMAGEM ???
 
-A redução de dimensionalidade dos dados, entretanto, reduz a capacidade de representação dos dados\cite{multidimensional-scaling-book}. Deste modo, existe um ao reduzir a latitude e a longitude (2 dimensões) dos municípios para apenas 1 dimensão, representada no eixo \emph{y} da figura \ref{fig:dengue-mds},
+%A redução de dimensionalidade dos dados, entretanto, reduz a capacidade de representação dos dados\cite{multidimensional-scaling-book}. Deste modo, existe um ao reduzir a latitude e a longitude (2 dimensões) dos municípios para apenas 1 dimensão, representada no eixo \emph{y} da figura \ref{fig:dengue-mds},
 
 
 
