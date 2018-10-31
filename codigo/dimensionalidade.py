@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from matplotlib.ticker import NullFormatter
 from matplotlib import colors
+from matplotlib.patches import Rectangle
 
 from sklearn import manifold
 from sklearn.metrics import euclidean_distances
@@ -15,6 +16,16 @@ nome = "dengue-temporal"
 arquivo_entrada = "./dados/ibge_municipios-completo.csv"
 arq_log = "./log/log_" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm") + ".txt"
 arq_fig = "./saida/" + nome + "_" + time.strftime("%Y%m%d-%Hh%Mm")
+
+
+def label(xy, text):
+    y = xy[1] - 0.15  # shift y-value for label so that it's below the artist
+    plt.text(xy[0], y, text, ha="center", family='sans-serif', size='x-small')
+
+def draw_rectangle (ax,x1,y1,x2,y2,label):
+    rect_subfig_a = Rectangle((x1,y1),x2-x1,y2-y1, fill=False, linestyle='-')   
+    ax.add_patch(rect_subfig_a)            
+    ax.text(x1+(x2-x1)/2,y1-2, label, ha="center", family='sans-serif', size='x-small')
 
 
 def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, x_nro_locators = None, y_nro_locators = None):
@@ -49,8 +60,8 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
         ax.yaxis.set_major_locator(mticker.AutoLocator())
     else:
         ax.yaxis.set_major_locator(mticker.MaxNLocator(y_nro_locators))
-        
-    ax.fill([90,120,120,90],[-5,-5,-15,-15], alpha=0.2, edgecolor='#ffffffff')
+    
+    draw_rectangle(ax,90,-15,120,-5,'(a) teste')
 
     plt.xlabel('Semana Epidemiológica', fontsize='x-small')
 #    plt.ylabel('Municípios')
@@ -81,7 +92,6 @@ def cria_imagem (lista, x_min = None, x_max = None, y_min = None, y_max = None, 
     
     cb.set_label ('Taxa de Incidência por 100 mil hab.', fontsize='x-small')
 
-#    plt.savefig(arq_fig+".eps", dpi=150)
     plt.savefig(arq_fig+"_x-"+str(x_min)+"-"+str(x_max)+"_y-"+str(y_min)+"-"+str(y_max)+".pdf", dpi=75)
     
     plt.show()
@@ -137,7 +147,7 @@ with open(arq_log, 'w', buffering=1) as arq_log:
     print("{0:s} - Criando Visualizacao".format(time.strftime("%Y-%m-%d %H:%M:%S")))   
     
     cria_imagem(lista_completa, y_nro_locators=16)
-    cria_imagem(lista_completa, x_min=90, x_max=120, y_min=-15, y_max=-5, y_nro_locators=16)
+#    cria_imagem(lista_completa, x_min=90, x_max=120, y_min=-15, y_max=-5, y_nro_locators=16)
 #    vmax = max(lista_completa[:,5].astype(float))
 #    vmin = min(lista_completa[:,5].astype(float))
      
