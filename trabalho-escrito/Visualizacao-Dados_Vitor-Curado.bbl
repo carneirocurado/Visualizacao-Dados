@@ -1,0 +1,118 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.6 }
+
+\bibitem{social-surveillance}
+\abntrefinfo{Zhang et al.}{ZHANG et al.}{2015}
+{ZHANG, E.~X. et al. Leveraging social networking sites for disease
+  surveillance and public sensing: the case of the 2013 avian influenza a(h7n9)
+  outbreak in china.
+\emph{Western Pacific Surveillance and Response Journal : WPSAR}, World Health
+  Organization, v.~6, n.~2, p. 66--72, Apr-Jun 2015.
+Dispon{\'\i}vel em:
+  \url{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4542489/}.}
+
+\bibitem{internet-surveillance}
+\abntrefinfo{Gu et al.}{GU et al.}{2014}
+{GU, H. et al. Importance of internet surveillance in public health emergency
+  control and prevention: Evidence from a digital epidemiologic study during
+  avian influenza a h7n9 outbreaks.
+\emph{Journal of Medical Internet Research}, JMIR Publications Inc., Toronto,
+  Canada, v.~16, n.~1, p.~e20, 01 2014.
+Dispon{\'\i}vel em:
+  \url{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3906895/}.}
+
+\bibitem{forecasting-zika}
+\abntrefinfo{McGough et al.}{MCGOUGH et al.}{2017}
+{MCGOUGH, S.~F. et al. Forecasting zika incidence in the 2016 latin america
+  outbreak combining traditional disease surveillance with search, social
+  media, and news report data.
+\emph{PLoS Neglected Tropical Diseases}, Public Library of Science, San
+  Francisco, CA USA, v.~11, n.~1, p. e0005295, 01 2017.
+Dispon{\'\i}vel em:
+  \url{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5268704/}.}
+
+\bibitem{who-strategy-dengue-prevention}
+\abntrefinfo{WHO}{WHO}{2012}
+{WHO. \emph{Global strategy for dengue prevention and control 2012-2020}.
+[S.l.], 2012.}
+
+\bibitem{who-dengue-website}
+\abntrefinfo{WHO}{WHO}{2018}
+{WHO. \emph{Dengue and severe dengue}. 2018.
+Dispon{\'\i}vel em:
+  \url{http://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue}.}
+
+\bibitem{ms-descricao-doenca}
+\abntrefinfo{MS}{MS}{2018}
+{MS. \emph{Descri{\c c}{\~a}o da Doen{\c c}a}. 2018.
+Dispon{\'\i}vel em:
+  \url{http://portalms.saude.gov.br/saude-de-a-z/dengue/descricao-da-doenca}.}
+
+\bibitem{effect-climate-dengue}
+\abntrefinfo{Hales et al.}{HALES et al.}{2002}
+{HALES, S. et al. Potential effect of population and climate changes on global
+  distribution of dengue fever: an empirical model.
+\emph{The Lancet}, v.~360, n.~9336, p. 830 -- 834, 2002.
+ISSN 0140-6736.
+Dispon{\'\i}vel em:
+  \url{http://www.sciencedirect.com/science/article/pii/S0140673602099646}.}
+
+\bibitem{cities-spawn-dengue}
+\abntrefinfo{Gubler}{GUBLER}{2004}
+{GUBLER, D.~J. Cities spawn epidemic dengue viruses.
+\emph{Nature Medicine}, Nature Publishing Group SN -, v.~10, p. 129 EP --, 02
+  2004.
+Dispon{\'\i}vel em: \url{http://dx.doi.org/10.1038/nm0204-129}.}
+
+\bibitem{travelling-dengue-thailand}
+\abntrefinfo{Cummings et al.}{CUMMINGS et al.}{2004}
+{CUMMINGS, D. A.~T. et al. Travelling waves in the occurrence of dengue
+  haemorrhagic fever in thailand.
+\emph{Nature}, Macmillan Magazines Ltd. SN -, v.~427, p. 344 EP --, 01 2004.
+Dispon{\'\i}vel em: \url{http://dx.doi.org/10.1038/nature02225}.}
+
+\bibitem{dengue-geographic-information-system}
+\abntrefinfo{ALI et al.}{ALI et al.}{2003}
+{ALI, M. et al. Use of a geographic information system for defining spatial
+  risk for dengue transmission in bangladesh: Role for aedes albopictus in an
+  urban outbreak.
+\emph{The American Journal of Tropical Medicine and Hygiene}, v.~69, n.~6, p.
+  634--640, 2003.
+Dispon{\'\i}vel em:
+  \url{https://www.ajtmh.org/content/journals/10.4269/ajtmh.2003.69.634}.}
+
+\bibitem{sklearn-mds}
+\abntrefinfo{Pedregosa et al.}{PEDREGOSA et al.}{2011}
+{PEDREGOSA, F. et al. Scikit-learn: Machine learning in {P}ython.
+\emph{Journal of Machine Learning Research}, v.~12, p. 2825--2830, 2011.
+Dispon{\'\i}vel em:
+  \url{https://scikit-learn.org/stable/modules/manifold.html\#multidimensional-scaling}.}
+
+\bibitem{multidimensional-scaling-book}
+\abntrefinfo{Hout et al.}{HOUT et al.}{}
+{HOUT, M.~C.; PAPESH, M.~H.; GOLDINGER, S.~D. Multidimensional scaling.
+\emph{Wiley Interdisciplinary Reviews: Cognitive Science}, v.~4, n.~1, p.
+  93--103.
+Dispon{\'\i}vel em:
+  \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/wcs.1203}.}
+
+\bibitem{gaussian-system-dengue}
+\abntrefinfo{Albinati et al.}{ALBINATI et al.}{2016}
+{ALBINATI, J.; MEIRA, W.; PAPPA, G.~L. An accurate gaussian process-based early
+  warning system for dengue fever. In:  \emph{2016 5th Brazilian Conference on
+  Intelligent Systems (BRACIS)}. [S.l.: s.n.], 2016. p. 43--48.}
+
+\bibitem{ms-boletim-epidemiologico}
+\abntrefinfo{Sa{\'u}de}{SA{\'U}DE}{2018}
+{SA{\'U}DE, M. da. Monitoramento dos casos de dengue, febre de chikungunya e
+  doen{\c c}a aguda pelo v{\'\i}rus zika at{\'e} a semana epidemiol{\'o}gica 43
+  de 2018.
+\emph{Boletim Epidemiol{\'o}gico nº48}, 2018.
+Dispon{\'\i}vel em:
+  \url{http://portalarquivos2.saude.gov.br/images/pdf/2018/novembro/13/2018-056.pdf}.}
+
+\end{thebibliography}
